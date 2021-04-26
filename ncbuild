@@ -1,0 +1,23 @@
+#!/bin/bash
+set -xeuo pipefail
+
+ecr_url=304160530156.dkr.ecr.us-east-1.amazonaws.com
+
+build() {
+    timestamp=$(date +%s)
+    chart_version=6.8.$timestamp
+
+    helm package charts/grafana --version $chart_version --dependency-update
+    chart_file=$(ls *.tgz)
+    HELM_S3_MODE=3 helm s3 push $chart_file newscred-stable --ignore-if-exists
+}
+
+case "$1" in
+    build)
+        $*
+        ;;
+    *)
+        echo "Usage: $0 build"
+        exit 1
+        ;;
+esac

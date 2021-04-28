@@ -1,8 +1,6 @@
 #!/bin/bash
 set -xeuo pipefail
 
-ecr_url=304160530156.dkr.ecr.us-east-1.amazonaws.com
-
 build() {
     timestamp=$(date +%s)
     chart_version=6.8.$timestamp
